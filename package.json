@@ -1,0 +1,15 @@
+{
+  "name": "ohmybank-server",
+  "version": "1.0.0",
+  "description": "Test server to demonstrate OhMyBank Mobile Application",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Vaishno Chaitanya",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

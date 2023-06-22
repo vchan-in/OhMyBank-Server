@@ -1,0 +1,72 @@
+[
+  {
+    "id": 3096980,
+    "name": "Garuda Gowda",
+    "email": "garuda_gowda@conroy.test",
+    "gender": "male",
+    "status": "inactive"
+  },
+  {
+    "id": 3096979,
+    "name": "Indira Pothuvaal",
+    "email": "pothuvaal_indira@hartmann.test",
+    "gender": "male",
+    "status": "active"
+  },
+  {
+    "id": 3096978,
+    "name": "Sen. Anwesha Bharadwaj",
+    "email": "sen_anwesha_bharadwaj@sporer.test",
+    "gender": "female",
+    "status": "inactive"
+  },
+  {
+    "id": 3096977,
+    "name": "Miss Anamika Nayar",
+    "email": "anamika_nayar_miss@walsh.test",
+    "gender": "male",
+    "status": "active"
+  },
+  {
+    "id": 3096975,
+    "name": "Laal Guneta",
+    "email": "guneta_laal@corwin-hirthe.test",
+    "gender": "male",
+    "status": "inactive"
+  },
+  {
+    "id": 3096974,
+    "name": "Sitara Sinha Ret.",
+    "email": "sitara_ret_sinha@borer.test",
+    "gender": "male",
+    "status": "active"
+  },
+  {
+    "id": 3096973,
+    "name": "Suresh Pothuvaal I",
+    "email": "pothuvaal_suresh_i@schoen.test",
+    "gender": "male",
+    "status": "inactive"
+  },
+  {
+    "id": 3096971,
+    "name": "Mrs. Bhoj Acharya",
+    "email": "mrs_bhoj_acharya@walker-veum.example",
+    "gender": "female",
+    "status": "active"
+  },
+  {
+    "id": 3096970,
+    "name": "Manjusha Mishra",
+    "email": "manjusha_mishra@kshlerin.test",
+    "gender": "female",
+    "status": "active"
+  },
+  {
+    "id": 3096969,
+    "name": "Miss Adityanandan Chopra",
+    "email": "adityanandan_chopra_miss@lang.example",
+    "gender": "female",
+    "status": "inactive"
+  }
+]

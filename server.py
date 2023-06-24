@@ -2,8 +2,8 @@ import uvicorn
 from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
 
-import crud, models, schemas
-from database import SessionLocal, engine
+from database import crud, models, schemas
+from database.database import SessionLocal, engine
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -22,8 +22,9 @@ def get_db():
 @app.get("/")
 async def root():
     response = {
+        "status_code": 200,
         "status": "success",
-        "message": "OhMyBank API is running",
+        "details": "Welcome to the OhMyBank API",
     }
     return response
 
@@ -61,8 +62,18 @@ Response
 async def create_account(account: schemas.UserAccountCreate, db: Session = Depends(get_db)):
     db_account = crud.get_account_by_username_and_password(db, account.username, account.password)
     if db_account:
-        raise HTTPException(status_code=400, detail="Username already registered")
-    return crud.create_account(db=db, account=account)
+        return HTTPException(status_code=400, detail="Username already registered")
+    
+    try:
+        crud.create_account(db=db, account=account)
+        response = {
+            "status_code": 200,
+            "status": "success",
+            "details": "Account created successfully",
+        }
+        return response
+    except Exception as e:
+        return HTTPException(status_code=400, detail=str(e))
 
 
 

@@ -21,7 +21,6 @@ class UserAccount(BaseModel):
 
 # Model for User Account Creation
 class UserAccountCreate(BaseModel):
-    account_id: int
     username: str
     user_email: str
     password: str

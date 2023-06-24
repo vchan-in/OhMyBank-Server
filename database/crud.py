@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-import models, schemas
+from . import models, schemas
 
 import hashlib, datetime, random
 
@@ -31,6 +31,8 @@ def get_account_by_username_and_password(db: Session, username: str, password: s
 
 # ----------------- WRITE OPERATIONS -------------------
 
+DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%SZ"  # ISO 8601 format for datetime
+
 # Create a new account
 def create_account(db: Session, account: schemas.UserAccountCreate):
     db_account = models.UserAccount(
@@ -45,8 +47,8 @@ def create_account(db: Session, account: schemas.UserAccountCreate):
         address=account.address,
         is_active=account.is_active,
         is_admin=account.is_admin,
-        created_at=datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
-        updated_at=datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"))
+        created_at=datetime.datetime.now().strftime(DATETIME_FORMAT),
+        updated_at=datetime.datetime.now().strftime(DATETIME_FORMAT))
     db.add(db_account)
     db.commit()
     db.refresh(db_account)
@@ -62,8 +64,8 @@ def create_transaction(db: Session, transaction: schemas.TransactionCreate, acco
         transaction_status=transaction.transaction_status,
         transaction_timestamp=transaction.transaction_timestamp,
         transaction_description=transaction.transaction_description,
-        created_at=datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
-        updated_at=datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"))
+        created_at=datetime.datetime.now().strftime(DATETIME_FORMAT),
+        updated_at=datetime.datetime.now().strftime(DATETIME_FORMAT))
     db.add(db_transaction)
     db.commit()
     db.refresh(db_transaction)

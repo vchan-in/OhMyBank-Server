@@ -1,13 +1,13 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
-from database import Base
+from .database import Base
 
 # User Account Model
 class UserAccount(Base):
     __tablename__ = "user_accounts"
 
-    id = Column(Integer, primary_key=True, index=True) # Account ID
+    account_id = Column(Integer, primary_key=True, index=True) # Account ID
     username = Column(String, unique=True, index=True)
     user_email = Column(String, unique=True, index=True)
     hashed_password = Column(String)
@@ -28,8 +28,8 @@ class UserAccount(Base):
 class Transaction(Base):
     __tablename__ = "transactions"
 
-    id = Column(Integer, primary_key=True, index=True, autoincrement=True) # Transaction ID
-    user_account_id = Column(Integer, ForeignKey("user_accounts.id"))
+    transaction_id = Column(Integer, primary_key=True, index=True, autoincrement=True) # Transaction ID
+    user_account_id = Column(Integer, ForeignKey("user_accounts.account_id")) # Account ID
     transaction_type = Column(String)
     amount = Column(Integer)
     currency = Column(String)

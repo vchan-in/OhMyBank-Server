@@ -16,8 +16,8 @@ class UserAccount(Base):
     currency = Column(String)
     phone = Column(String)
     address = Column(String)
-    is_active = Column(Boolean, default=True)
-    is_admin = Column(Boolean, default=False)
+    is_active = Column(Boolean)
+    is_admin = Column(Boolean)
     created_at = Column(String)
     updated_at = Column(String)
 

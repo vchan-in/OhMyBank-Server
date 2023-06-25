@@ -1,4 +1,5 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+from typing import Optional
 
 # Model for User Account
 class UserAccount(BaseModel):
@@ -21,6 +22,29 @@ class UserAccount(BaseModel):
 
 # Model for User Account Creation
 class UserAccountCreate(BaseModel):
+    username: str
+    user_email: str
+    password: str
+    account_type: str = Field(default="savings")
+    currency: str = Field(default="inr")
+    phone: str
+    address: str
+    is_active: bool
+    is_admin: Optional[bool] = Field(default=False)
+
+    class Config:
+        orm_mode = True
+
+# Model for User Account Login
+class UserAccountLogin(BaseModel):
+    username: str
+    password: str
+
+    class Config:
+        orm_mode = True
+
+# Model for User Account Update
+class UserAccountUpdate(BaseModel):
     username: str
     user_email: str
     password: str

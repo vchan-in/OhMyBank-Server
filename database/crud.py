@@ -1,7 +1,6 @@
 from sqlalchemy.orm import Session
 
 from . import models, schemas
-
 import hashlib, datetime, random
 
 # ----------------- READ OPERATIONS -------------------
@@ -22,6 +21,10 @@ def get_all_accounts(db: Session):
 def get_account_by_id(db: Session, account_id: int):
     return db.query(models.UserAccount).filter(models.UserAccount.id == account_id).first()
 
+# Get account by username
+def get_account_by_username(db: Session, username: str):
+    return db.query(models.UserAccount).filter(models.UserAccount.username == username).first()
+
 # Get account by username and password
 def get_account_by_username_and_password(db: Session, username: str, password: str):
     return db.query(models.UserAccount).filter(
@@ -36,10 +39,10 @@ DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%SZ"  # ISO 8601 format for datetime
 # Create a new account
 def create_account(db: Session, account: schemas.UserAccountCreate):
     db_account = models.UserAccount(
-        account_id=random.randint(100000000, 999999999), # Generate random 9-digit account ID
+        account_id=random.randint(100000000, 999999999), # Generate random 9-digit account ID   # Vuln: Predictable random number generator
         username=account.username,
         user_email=account.user_email,
-        hashed_password=hashlib.md5(account.password.encode()).hexdigest(), # Weak password hashing
+        hashed_password=hashlib.md5(account.password.encode()).hexdigest(), # Vuln: Weak hashing algorithm
         account_type=account.account_type,
         balance=0.0, # New accounts start with 0 balance
         currency=account.currency,

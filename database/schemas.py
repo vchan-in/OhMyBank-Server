@@ -26,6 +26,7 @@ class UserAccountCreate(BaseModel):
     user_email: str
     password: str
     account_type: str = Field(default="savings")
+    balance: float = Field(default=0.00)
     currency: str = Field(default="inr")
     phone: str
     address: str

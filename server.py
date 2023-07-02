@@ -1,5 +1,6 @@
 import uvicorn, datetime
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, Response, status
+from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
 from database import crud, models, schemas
@@ -8,10 +9,24 @@ from database.database import get_db, SessionLocal, engine
 from auth.schemas import Token as TokenSchema
 from auth.auth import authenticate_account, create_access_token, get_expire_time_access_token, get_current_account
 
+from fastapi.middleware.cors import CORSMiddleware
+
 
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+
+
+# Configure CORS
+origins = ["*"]  # Adjust this to allow requests from specific domains
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["GET", "POST"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 async def root():
@@ -21,7 +36,7 @@ async def root():
     }
     return response
 
-@app.post("/api/v2/accounts")
+@app.post("/api/v2/accounts", status_code=201, tags=["accounts"])
 async def create_account(account: schemas.UserAccountCreate, db: Session = Depends(get_db)):
     """
     ## Create Account API
@@ -38,6 +53,7 @@ async def create_account(account: schemas.UserAccountCreate, db: Session = Depen
         "account_role": "user",
         "phone": "+1234567890",
         "address": "123 Main St, City, Country",
+        "is_active": true
     }
 
     Response
@@ -55,21 +71,26 @@ async def create_account(account: schemas.UserAccountCreate, db: Session = Depen
     """
     db_account = crud.get_account_by_username_and_password(db, account.username, account.password)
     if db_account:
-        return HTTPException(status_code=400, detail="Username already registered")
+        return JSONResponse(status_code=400, content={"status_code": 400, "details": "Account already exists"})
     
     try:
         crud.create_account(db=db, account=account)
         response = {
-            "status_code": 200,
+            "status_code": 201,
             "details": "Account created successfully",
+            "data": {
+                "username": account.username,
+                "balance": account.balance,
+                "currency": account.currency,
+            }
         }
         return response
     except Exception as e:
-        return HTTPException(status_code=400, detail=str(e))    # Vuln: Exposing sensitive information in error message
+        return JSONResponse(status_code=400, content={"status_code": 400, "details": str(e)})
 
 
-@app.post("/api/v2/accounts/login", tags=["accounts"])
-async def login_account(account: schemas.UserAccountLogin, db: Session = Depends(get_db)):
+@app.post("/api/v2/accounts/login", tags=["accounts"], status_code=200)
+async def login_account(account: schemas.UserAccountLogin, db: Session = Depends(get_db), response: Response = None):
     """
     ## Login Account API
     POST /api/v2/accounts/login
@@ -102,7 +123,7 @@ async def login_account(account: schemas.UserAccountLogin, db: Session = Depends
         }
         return response
     else:
-        return HTTPException(status_code=400, detail="Invalid credentials")
+        return JSONResponse(status_code=400, content={"status_code": 400, "details": "Invalid credentials"})
     
 
 # Check Life Time of JWT Token
@@ -137,6 +158,7 @@ async def check_token(token: TokenSchema, db: Session = Depends(get_db)):
         }
         return response
     except Exception as e:
+        response.status_code = 400
         return HTTPException(status_code=400, detail=str(e))
     
 

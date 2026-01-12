@@ -32,7 +32,7 @@ app.add_middleware(
 async def root():
     response = {
         "status_code": 200,
-        "details": "Welcome to the OhMyBank API",
+        "details": "Welcome to the CloverBank API",
     }
     return response
 

@@ -160,4 +160,4 @@ cython_debug/
 #.idea/
 
 # User Define
-ohmybank.sqlite
+cloverbank.sqlite
